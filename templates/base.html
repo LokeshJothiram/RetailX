@@ -20,11 +20,11 @@
         <div class="accent-line"></div>
     </header>
     <nav>
-        <a href="/"><i class="fa fa-home"></i> Home</a>
-        <a href="/categories"><i class="fa fa-list"></i> Categories</a>
-        <a href="/inventory"><i class="fa fa-boxes-stacked"></i> Inventory</a>
-        <a href="/billing"><i class="fa fa-file-invoice-dollar"></i> Billing</a>
-        <a href="/insights"><i class="fa fa-chart-bar"></i> Insights</a>
+        <a href="/" class="{% if active_page == 'home' %}active{% endif %}"><i class="fa fa-home"></i> Home</a>
+        <a href="/categories" class="{% if active_page == 'categories' %}active{% endif %}"><i class="fa fa-list"></i> Categories</a>
+        <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}"><i class="fa fa-boxes-stacked"></i> Inventory</a>
+        <a href="/billing" class="{% if active_page == 'billing' %}active{% endif %}"><i class="fa fa-file-invoice-dollar"></i> Billing</a>
+        <a href="/insights" class="{% if active_page == 'insights' %}active{% endif %}"><i class="fa fa-chart-bar"></i> Insights</a>
     </nav>
     <div class="container">
         <div id="toast-container"></div>

@@ -56,7 +56,7 @@ def home():
     sales_df = pd.read_excel(SALES_FILE)
     total_sales = sales_df['Total'].sum() if not sales_df.empty else 0
     recent_sales = sales_df.sort_values('Date', ascending=False).head(3).to_dict('records') if not sales_df.empty else []
-    return render_template('home.html', total_items=total_items, categories=categories, total_categories=total_categories, total_products=total_products, total_sales=total_sales, recent_sales=recent_sales)
+    return render_template('home.html', total_items=total_items, categories=categories, total_categories=total_categories, total_products=total_products, total_sales=total_sales, recent_sales=recent_sales, active_page='home')
 
 @app.route('/categories', methods=['GET', 'POST'])
 def categories():
@@ -99,7 +99,7 @@ def categories():
             inv_df.to_excel(INVENTORY_FILE, index=False)
             flash('Category and all its products deleted!', 'info')
             return redirect(url_for('categories'))
-    return render_template('categories.html', categories=categories)
+    return render_template('categories.html', categories=categories, active_page='categories')
 
 @app.route('/inventory', methods=['GET', 'POST'])
 def inventory():
@@ -166,7 +166,7 @@ def inventory():
     low_stock_items = filtered_df[filtered_df['Stock'] < low_stock_threshold]
     if not low_stock_items.empty:
         flash(f'Low stock alert: {len(low_stock_items)} item(s) below {low_stock_threshold}', 'warning')
-    return render_template('inventory.html', inventory=filtered_df.to_dict('records'), categories=categories, search=search, filter_cat=filter_cat, low_stock_threshold=low_stock_threshold)
+    return render_template('inventory.html', inventory=filtered_df.to_dict('records'), categories=categories, search=search, filter_cat=filter_cat, low_stock_threshold=low_stock_threshold, active_page='inventory')
 
 @app.route('/billing', methods=['GET', 'POST'])
 def billing():
@@ -228,8 +228,8 @@ def billing():
         # Prepare invoice for display
         invoice = sale_row
         flash('Invoice generated and inventory updated!', 'success')
-        return render_template('billing.html', categories=categories, inventory=df.to_dict('records'), invoice=invoice)
-    return render_template('billing.html', categories=categories, inventory=df.to_dict('records'), invoice=invoice)
+        return render_template('billing.html', categories=categories, inventory=df.to_dict('records'), invoice=invoice, active_page='billing')
+    return render_template('billing.html', categories=categories, inventory=df.to_dict('records'), invoice=invoice, active_page='billing')
 
 @app.route('/insights')
 def insights():
@@ -254,7 +254,8 @@ def insights():
         sales_by_prod=sales_by_prod,
         sales_by_date=sales_by_date,
         best_sellers=best_sellers,
-        low_stock=low_stock
+        low_stock=low_stock,
+        active_page='insights'
     )
 
 if __name__ == '__main__':
