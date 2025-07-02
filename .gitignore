@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+ENV/
+.env/
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# Excel data files (keep folder, ignore files)
+data/*.xlsx
+!data/
+
+# Images (optional, keep folder)
+static/images/*
+!static/images/
+
+# Other
+*.log
