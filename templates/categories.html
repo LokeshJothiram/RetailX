@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Product Categories</h2>
+<ul>
+  {% for cat in categories %}
+    <li>
+      {{ cat }}
+      <form method="post" style="display:inline;">
+        <input type="hidden" name="edit_category" value="{{ cat }}">
+        <input type="text" name="new_name" placeholder="New name" required style="width:120px;">
+        <button type="submit" class="btn" title="Edit"><i data-lucide="pencil"></i></button>
+      </form>
+      <form method="post" style="display:inline;">
+        <input type="hidden" name="delete_category" value="{{ cat }}">
+        <button type="submit" class="btn" onclick="return confirm('Delete this category?');" title="Delete"><i data-lucide="trash-2"></i></button>
+      </form>
+    </li>
+  {% else %}
+    <li>No categories yet.</li>
+  {% endfor %}
+</ul>
+<hr>
+<h3>Add New Category</h3>
+<form method="post">
+  <input type="text" name="category" placeholder="Category Name" required>
+  <button type="submit" class="btn" title="Add"><i data-lucide="plus"></i></button>
+</form>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  if (window.lucide) lucide.createIcons();
+});
+</script>
+{% endblock %} 

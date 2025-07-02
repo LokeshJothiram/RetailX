@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Billing</h2>
+<form method="post">
+  <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+    <label>Category:</label>
+    <select name="category" id="category-select">
+      <option value="">Select Category</option>
+      {% for cat in categories %}
+        <option value="{{ cat }}">{{ cat }}</option>
+      {% endfor %}
+    </select>
+    <label>Product:</label>
+    <select name="product" id="product-select">
+      <option value="">Select Product</option>
+      {% for item in inventory %}
+        <option value="{{ item['SKU'] }}" data-category="{{ item['Category'] }}">{{ item['Name'] }}</option>
+      {% endfor %}
+    </select>
+    <label>Quantity:</label>
+    <input type="number" name="quantity" min="1" value="1" required style="width:80px;">
+    <label>Tax (5%):</label>
+    <input type="text" value="5%" readonly style="width:60px;background:#f5f7fa;cursor:not-allowed;">
+  </div>
+  <div style="margin-top:1.2rem;">
+    <label>Discount:</label>
+    <input type="number" name="discount" min="0" value="0" step="0.01" style="width:120px;">
+  </div>
+  <br>
+  <button type="submit" class="btn">Generate Invoice</button>
+</form>
+<div id="invoice-area">
+  {% if invoice %}
+    <hr>
+    <h3>Invoice</h3>
+    <div style="background:#f8f9fa;padding:1rem;border-radius:8px;max-width:400px;">
+      <strong>Invoice ID:</strong> {{ invoice['InvoiceID'] }}<br>
+      <strong>Date:</strong> {{ invoice['Date'] }}<br>
+      <strong>Product:</strong> {{ invoice['Name'] }}<br>
+      <strong>Category:</strong> {{ invoice['Category'] }}<br>
+      <strong>Quantity:</strong> {{ invoice['Quantity'] }}<br>
+      <strong>Price:</strong> {{ invoice['Price'] }}<br>
+      <strong>Subtotal:</strong> {{ invoice['Subtotal']|round(2) }}<br>
+      <strong>Tax:</strong> {{ invoice['Tax']|round(2) }}<br>
+      <strong>Discount:</strong> {{ invoice['Discount']|round(2) }}<br>
+      <strong>Total:</strong> <span style="font-size:1.2em;">{{ invoice['Total']|round(2) }}</span><br>
+    </div>
+    <button onclick="window.print()" class="btn" style="margin-top:1rem;">Print Invoice</button>
+  {% endif %}
+</div>
+<script>
+// Simple JS to filter products by category
+const categorySelect = document.getElementById('category-select');
+const productSelect = document.getElementById('product-select');
+categorySelect.addEventListener('change', function() {
+  const selectedCat = this.value;
+  for (let opt of productSelect.options) {
+    if (!opt.value) continue;
+    opt.style.display = (opt.getAttribute('data-category') === selectedCat) ? '' : 'none';
+  }
+  productSelect.value = '';
+});
+</script>
+{% endblock %} 

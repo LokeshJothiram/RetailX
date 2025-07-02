@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width:700px;margin:0 auto;">
+  <div style="text-align:center;margin-bottom:2.2rem;">
+    <h2 style="font-size:2.1em;margin-bottom:0.2em;">Welcome to <span style="color:#007bff;">RetailX</span>!</h2>
+    <div style="font-size:1.2em;color:#555;margin-bottom:0.7em;">Your all-in-one solution for smart retail management.</div>
+    <div style="font-size:1.05em;color:#888;">Inventory • Billing • Insights — All in one place.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <i class="fa fa-list fa-2x" style="color:#007bff;"></i><br>
+      <div style="font-size:1.5em;font-weight:700;">{{ total_categories }}</div>
+      <div style="color:#555;">Categories</div>
+    </div>
+    <div class="stat-card">
+      <i class="fa fa-boxes-stacked fa-2x" style="color:#28a745;"></i><br>
+      <div style="font-size:1.5em;font-weight:700;">{{ total_products }}</div>
+      <div style="color:#555;">Products</div>
+    </div>
+    <div class="stat-card">
+      <i class="fa fa-coins fa-2x" style="color:#ffc107;"></i><br>
+      <div style="font-size:1.5em;font-weight:700;">₹{{ total_sales|round(2) }}</div>
+      <div style="color:#555;">Total Sales</div>
+    </div>
+    <div class="stat-card">
+      <i class="fa fa-cubes fa-2x" style="color:#6f42c1;"></i><br>
+      <div style="font-size:1.5em;font-weight:700;">{{ total_items }}</div>
+      <div style="color:#555;">Stock Items</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.2rem;">
+    <a href="/billing" class="btn" style="background:#28a745;"><i class="fa fa-file-invoice-dollar"></i> Go to Billing</a>
+    <a href="/inventory" class="btn" style="background:#007bff;"><i class="fa fa-boxes-stacked"></i> Manage Inventory</a>
+    <a href="/insights" class="btn" style="background:#ffc107;color:#23272b;"><i class="fa fa-chart-bar"></i> View Insights</a>
+  </div>
+  <div style="background:#fff;padding:1.5rem 1.2rem 1.2rem 1.2rem;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:2rem;">
+    <h3 style="margin-top:0;">Product Categories:</h3>
+    <ul style="font-size:1.1em;">
+      {% for cat in categories %}
+        <li>{{ cat }}</li>
+      {% else %}
+        <li>No categories yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div style="background:#fff;padding:1.5rem 1.2rem 1.2rem 1.2rem;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+    <h3 style="margin-top:0;">Recent Sales</h3>
+    <table class="table" style="margin-bottom:0;">
+      <tr><th>Date</th><th>Product</th><th>Qty</th><th>Total</th></tr>
+      {% for sale in recent_sales %}
+        <tr>
+          <td>{{ sale['Date'] }}</td>
+          <td>{{ sale['Name'] }}</td>
+          <td>{{ sale['Quantity'] }}</td>
+          <td>₹{{ sale['Total']|round(2) }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4">No sales yet.</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %} 

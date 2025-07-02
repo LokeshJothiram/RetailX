@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailX Inventory & Billing System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/shop.png" alt="RetailX Logo">
+            <h1>RetailX</h1>
+        </div>
+        <div class="tagline">Smart Retail Management System</div>
+        <div class="accent-line"></div>
+    </header>
+    <nav>
+        <a href="/"><i class="fa fa-home"></i> Home</a>
+        <a href="/categories"><i class="fa fa-list"></i> Categories</a>
+        <a href="/inventory"><i class="fa fa-boxes-stacked"></i> Inventory</a>
+        <a href="/billing"><i class="fa fa-file-invoice-dollar"></i> Billing</a>
+        <a href="/insights"><i class="fa fa-chart-bar"></i> Insights</a>
+    </nav>
+    <div class="container">
+        <div id="toast-container"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          <div id="flash-data" data-messages='{{ messages|tojson|safe }}' style="display:none;"></div>
+        {% endwith %}
+        <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function() {
+          var flashDiv = document.getElementById('flash-data');
+          var messages = [];
+          if (flashDiv) {
+            try {
+              messages = JSON.parse(flashDiv.getAttribute('data-messages'));
+            } catch (e) { messages = []; }
+          }
+          messages.forEach(function(msg) {
+            var category = msg[0];
+            var text = msg[1];
+            showToast(text, category);
+          });
+        });
+        function showToast(message, category) {
+          var toast = document.createElement('div');
+          toast.className = 'toast ' + (category || 'info');
+          var icon = document.createElement('i');
+          if (category === 'success') icon.className = 'fa fa-check-circle';
+          else if (category === 'error') icon.className = 'fa fa-times-circle';
+          else if (category === 'warning') icon.className = 'fa fa-exclamation-triangle';
+          else icon.className = 'fa fa-info-circle';
+          toast.appendChild(icon);
+          var span = document.createElement('span');
+          span.style.marginLeft = '0.7em';
+          span.innerText = message;
+          toast.appendChild(span);
+          document.getElementById('toast-container').appendChild(toast);
+          setTimeout(function() {
+            toast.classList.add('hide');
+            setTimeout(function() { toast.remove(); }, 500);
+          }, 3000);
+        }
+        </script>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html> 
